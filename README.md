@@ -134,7 +134,8 @@ buildscript {
 
 ```
 implementation project(':aws-api')
-implementation project(':aws-datastore')
+implementation project(':aws-api-appsync') // Needed to use Temporal types
 implementation project(':aws-auth-cognito')
+implementation project(':aws-datastore')
 ```
 
