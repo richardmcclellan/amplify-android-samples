@@ -12,6 +12,7 @@ To use, install, and evaluate this application, please do the following:
 3. Using the [`schema.graphql`](./schema.graphql) as below,
    generate models and deploy an AppSync backend. Make sure that this
    step updates your local configuration.
+
 ```graphql
 type Todo @model
     @auth(rules: [{ allow: owner }]) {
@@ -84,3 +85,56 @@ might look as below:
 ```
 
 5. Build the app and install it on an Android device.
+
+## Usage
+
+ - Tap "Sign In" to sign in with the credentials in your sign_in.xml, and query all Todos
+ - Tap the floating action button to save a new random Todo
+ - Tap any Todo to delete it.
+ - Tap the Power button icon to signs out and clear DataStore
+ - Tap the gear icon to go to a Settings page.
+
+## Amplify Library Development
+
+When developing with the library, it is often very useful to be able to make changes to the sample app and the library within the same Android Studio project.  This allows you to test library changes in a sample app, even if the tests aren't passing yet, or the checkstyle isn't satisfied yet.  It also enables stepping through sample app or library code with the debugger in the same session.  This can be setup with the following steps:
+
+1. Create a symlink from amplify-android/app to app-datastore/app
+
+```
+ln -s ~/workspace/app-datastore/app ~/workspace/amplify-android/app
+```
+
+2. In amplify-android/settings.gradle, add the new module:
+
+```
+include ':app'
+```
+
+3. In amplify-android/build.gradle, add Kotlin support by replacing the `buildscript` section with:
+
+```
+buildscript {
+    ext {
+        kotlin_version = '1.4.20'
+    }
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+```
+
+
+4. In app/build.gradle, modify the Amplify library references to reference the local modules.
+
+```
+implementation project(':aws-api')
+implementation project(':aws-datastore')
+implementation project(':aws-auth-cognito')
+```
+
