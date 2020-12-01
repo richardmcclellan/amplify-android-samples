@@ -43,7 +43,7 @@ class ListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            save(Dummy.todo())
+            save(Dummy.todo(applicationContext))
         }
 
         var recyclerView = findViewById<RecyclerView>(R.id.item_list)
@@ -55,7 +55,7 @@ class ListActivity : AppCompatActivity() {
     fun query() {
         Amplify.DataStore.query(Todo::class.java,
             {
-                LOG.debug("query succeeded")
+                LOG.debug("query succeeded: " + it.iterator().asSequence().toList().size + " Todos")
                 observe()
                 itemMap = linkedMapOf(*it
                     .iterator()
@@ -106,6 +106,9 @@ class ListActivity : AppCompatActivity() {
         runOnUiThread {
             itemAdapter.values = itemMap.values.toList()
             itemAdapter.notifyDataSetChanged()
+            val emptyView = findViewById<TextView>(R.id.empty_view)
+            emptyView.visibility = if (itemMap.size == 0) View.VISIBLE else View.GONE
+            emptyView.setText("No Todos.  Tap + to create one!")
         }
     }
 

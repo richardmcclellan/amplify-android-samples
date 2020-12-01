@@ -1,5 +1,6 @@
 package com.amplifyframework.app.datastore
 
+import android.content.Context
 import com.amplifyframework.core.model.temporal.Temporal
 import com.amplifyframework.datastore.generated.model.Status
 import com.amplifyframework.datastore.generated.model.Todo
@@ -10,25 +11,12 @@ import kotlin.random.nextInt
 
 class Dummy {
     companion object {
-        fun todo(): Todo {
+        fun todo(context: Context): Todo {
             return Todo.builder()
-                .name(randomTodoName())
+                .name(context.resources.getStringArray(R.array.random_todos).random())
                 .status(Status.NOT_STARTED)
                 .dueDate(randomDateTime())
                 .build()
-        }
-
-        /**
-         * Returns a random name for a Todo, composed of a verb concatenated with a thing.
-         */
-        fun randomTodoName(): String {
-            val verbs = arrayOf(
-                "Mop", "Sweep", "Clean", "Brush", "Wipe",
-                "Dust", "Scrub", "Polish", "Shine", "Wash")
-            val things = arrayOf(
-                "Cabinets", "Floors", "Walls", "Ceiling", "Blinds",
-                "Table", "Desk", "Chair", "Lamp", "Clothes")
-            return "${randomString(verbs)} ${randomString(things)}"
         }
 
         /**
