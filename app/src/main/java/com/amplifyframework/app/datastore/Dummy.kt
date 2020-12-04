@@ -20,9 +20,22 @@ class Dummy {
         }
 
         /**
+         * Returns a random name for a Todo, composed of a verb concatenated with a thing.
+         */
+        private fun randomTodoName(): String {
+            val verbs = arrayOf(
+                "Mop", "Sweep", "Clean", "Brush", "Wipe",
+                "Dust", "Scrub", "Polish", "Shine", "Wash")
+            val things = arrayOf(
+                "Cabinets", "Floors", "Walls", "Ceiling", "Blinds",
+                "Table", "Desk", "Chair", "Lamp", "Clothes")
+            return "${randomString(verbs)} ${randomString(things)}"
+        }
+
+        /**
          * Returns a random Temporal.DateTime between 1 and 24 hours from now.
          */
-        fun randomDateTime(): Temporal.DateTime {
+        private fun randomDateTime(): Temporal.DateTime {
             val cal = GregorianCalendar()
             cal.add(Calendar.HOUR_OF_DAY, Random.nextInt(1,24))
             return Temporal.DateTime(cal.time,
@@ -30,10 +43,8 @@ class Dummy {
             )
         }
 
-        fun randomString(arr: Array<String>): String {
+        private fun randomString(arr: Array<String>): String {
             return arr[Random.nextInt(IntRange(0, arr.size - 1))]
         }
-
     }
-
 }

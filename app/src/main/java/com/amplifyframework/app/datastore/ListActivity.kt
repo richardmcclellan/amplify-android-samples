@@ -18,20 +18,15 @@ package com.amplifyframework.app.datastore
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.predicate.QueryPredicate
-import com.amplifyframework.datastore.DataStoreChannelEventName
 import com.amplifyframework.datastore.generated.model.Todo
-import com.amplifyframework.hub.HubChannel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ListActivity : AppCompatActivity() {
-    private val LOG = Amplify.Logging.forNamespace("app-datastore:ListActivity")
     private val itemAdapter: SimpleItemRecyclerViewAdapter = SimpleItemRecyclerViewAdapter(listOf(), this)
     private var itemMap = linkedMapOf<String, Todo>()
 
@@ -46,18 +41,18 @@ class ListActivity : AppCompatActivity() {
             save(Dummy.todo(applicationContext))
         }
 
-        var recyclerView = findViewById<RecyclerView>(R.id.item_list)
+        val recyclerView = findViewById<RecyclerView>(R.id.item_list)
         recyclerView.adapter =  itemAdapter
 
         query()
     }
 
-    fun query() {
+    private fun query() {
         Amplify.DataStore.query(Todo::class.java,
-            {
+            { results ->
                 LOG.debug("query succeeded: " + it.iterator().asSequence().toList().size + " Todos")
                 observe()
-                itemMap = linkedMapOf(*it
+                itemMap = linkedMapOf(*results
                     .iterator()
                     .asSequence()
                     .toList()
@@ -69,7 +64,7 @@ class ListActivity : AppCompatActivity() {
         )
     }
 
-    fun observe() {
+    private fun observe() {
         Amplify.DataStore.observe(Todo::class.java,
             {
                 LOG.debug("observe started.")
@@ -82,7 +77,7 @@ class ListActivity : AppCompatActivity() {
             { LOG.debug("observe completed.") })
     }
 
-    fun save(item: Todo) {
+    private fun save(item: Todo) {
         Amplify.DataStore.save(item,
             {
                 LOG.debug("save succeeded: " + it.item())
@@ -102,7 +97,7 @@ class ListActivity : AppCompatActivity() {
             { LOG.error("delete failed:" + it.message, it) })
     }
 
-    fun reloadData() {
+    private fun reloadData() {
         runOnUiThread {
             itemAdapter.values = itemMap.values.toList()
             itemAdapter.notifyDataSetChanged()
@@ -132,7 +127,7 @@ class ListActivity : AppCompatActivity() {
         }
     }
 
-    fun signOut() {
+    private fun signOut() {
         Amplify.Auth.signOut(
             {
                 LOG.debug("sign out succeeded")
@@ -148,7 +143,7 @@ class ListActivity : AppCompatActivity() {
         )
     }
 
-    class SimpleItemRecyclerViewAdapter(var values: List<Todo>, var delegate: ListActivity) :
+    class SimpleItemRecyclerViewAdapter(var values: List<Todo>, private val delegate: ListActivity) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
@@ -163,7 +158,7 @@ class ListActivity : AppCompatActivity() {
             with(holder.itemView) {
                 tag = item
                 setOnClickListener { v ->
-                    delegate.delete(v.tag as Todo);
+                    delegate.delete(v.tag as Todo)
                 }
             }
         }
@@ -173,5 +168,9 @@ class ListActivity : AppCompatActivity() {
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val contentView: TextView = view.findViewById(R.id.content)
         }
+    }
+
+    companion object {
+        private val LOG = Amplify.Logging.forNamespace("app-datastore:ListActivity")
     }
 }
