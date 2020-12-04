@@ -26,9 +26,8 @@ import com.amplifyframework.datastore.DataStoreConfiguration
 import com.amplifyframework.logging.AndroidLoggingPlugin
 import com.amplifyframework.logging.LogLevel
 
+@Suppress("unused") // It is referenced in AndroidManifest.xml.
 class MainApplication : Application() {
-    private val LOG = Amplify.Logging.forNamespace("app-datastore:mainapplication")
-
     override fun onCreate() {
         super.onCreate()
         try {
@@ -50,5 +49,9 @@ class MainApplication : Application() {
         } catch (exception: AmplifyException) {
             LOG.error("Configure failed: " + exception.message, exception)
         }
+    }
+
+    companion object {
+        private val LOG = Amplify.Logging.forNamespace("app-datastore:mainapplication")
     }
 }

@@ -23,26 +23,30 @@ import androidx.appcompat.app.AppCompatActivity
 import com.amplifyframework.core.Amplify
 
 class SignInActivity : AppCompatActivity() {
-    private val LOG = Amplify.Logging.forNamespace("app-datastore:SignInActivity")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
-        findViewById<Button>(R.id.sign_in_button).setOnClickListener( { signIn() })
+        findViewById<Button>(R.id.sign_in_button).setOnClickListener { signIn() }
     }
 
     private fun signIn() {
+        val resources = applicationContext.resources
         Amplify.Auth.signIn(
-                applicationContext.resources.getString(R.string.username),
-                applicationContext.resources.getString(R.string.password),
-                { runOnUiThread({
-                    Toast.makeText(this, "Sign in succeeded", Toast.LENGTH_SHORT).show()
-                    LOG.debug("Sign in succeeded: " + it)
-                    startActivity(Intent(this, ListActivity::class.java))
-                })},
-                { runOnUiThread({
-                    Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
-                    LOG.error("Sign in failed: " + it.message, it)
-                })})
+            resources.getString(R.string.username),
+            resources.getString(R.string.password),
+            { runOnUiThread {
+                Toast.makeText(this, "Sign in succeeded", Toast.LENGTH_SHORT).show()
+                LOG.debug("Sign in succeeded: $it")
+                startActivity(Intent(this, ListActivity::class.java))
+            } },
+            { runOnUiThread {
+                Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
+                LOG.error("Sign in failed: " + it.message, it)
+            } }
+        )
+    }
+
+    companion object {
+        private val LOG = Amplify.Logging.forNamespace("app-datastore:SignInActivity")
     }
 }

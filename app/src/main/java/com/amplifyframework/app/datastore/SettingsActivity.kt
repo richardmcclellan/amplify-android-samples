@@ -21,9 +21,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.amplifyframework.core.Amplify
 
 class SettingsActivity : AppCompatActivity() {
-
-    private val LOG = Amplify.Logging.forNamespace("app-datastore:ProfileActivity")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -33,20 +30,24 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun fetchAuthSession() {
         Amplify.Auth.fetchAuthSession(
-            { LOG.debug("Auth session: " + it) },
+            { LOG.debug("Auth session: $it") },
             { LOG.error("Error retrieving AuthSession: ", it) }
         )
     }
 
     private fun fetchUserAttributes() {
         Amplify.Auth.fetchUserAttributes(
-        { runOnUiThread({
-            Toast.makeText(this, "Got user attributes!", Toast.LENGTH_SHORT).show()
-            LOG.debug("User attributes: " + it)
-        })},
-        { runOnUiThread({
-            Toast.makeText(this, "Failed to sign in", Toast.LENGTH_SHORT).show()
-            LOG.error("Failed to sign in: " + it.message, it)
-        })})
-        }
+            { runOnUiThread {
+                Toast.makeText(this, "Got user attributes!", Toast.LENGTH_SHORT).show()
+                LOG.debug("User attributes: $it")
+            } }, { runOnUiThread {
+                Toast.makeText(this, "Failed to sign in", Toast.LENGTH_SHORT).show()
+                LOG.error("Failed to sign in: " + it.message, it)
+            } }
+        )
+    }
+
+    companion object {
+        private val LOG = Amplify.Logging.forNamespace("app-datastore:ProfileActivity")
+    }
 }
