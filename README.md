@@ -138,4 +138,3 @@ implementation project(':aws-api-appsync') // Needed to use Temporal types
 implementation project(':aws-auth-cognito')
 implementation project(':aws-datastore')
 ```
-

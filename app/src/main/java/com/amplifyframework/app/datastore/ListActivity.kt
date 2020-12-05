@@ -45,26 +45,27 @@ class ListActivity : AppCompatActivity() {
         recyclerView.adapter =  itemAdapter
 
         query()
+        observe()
     }
 
+
     private fun query() {
+        LOG.debug("query")
         Amplify.DataStore.query(Todo::class.java,
             { results ->
-                LOG.debug("query succeeded: " + it.iterator().asSequence().toList().size + " Todos")
-                observe()
-                itemMap = linkedMapOf(*results
-                    .iterator()
-                    .asSequence()
-                    .toList()
-                    .map { it.id to it }
-                    .toTypedArray())
-                reloadData()
+                val todosList = results.iterator().asSequence().toList()
+                val pairsList = todosList.map { it.id to it }
+                val array = pairsList.toTypedArray()
+                itemMap = linkedMapOf(*array)
+                LOG.debug("query succeeded: " + itemMap.size + " Todos")
+                loadContent()
             },
             { LOG.error("query failed: " + it.message, it) }
         )
     }
 
     private fun observe() {
+        LOG.debug("observe")
         Amplify.DataStore.observe(Todo::class.java,
             {
                 LOG.debug("observe started.")
@@ -78,26 +79,28 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun save(item: Todo) {
+        LOG.debug("save")
         Amplify.DataStore.save(item,
             {
                 LOG.debug("save succeeded: " + it.item())
                 itemMap[it.item().id] = it.item()
-                reloadData()
+                loadContent()
             },
             { LOG.error("save failed: " + it.message, it) })
     }
 
     fun delete(item: Todo) {
+        LOG.debug("delete")
         Amplify.DataStore.delete(item,
             {
                 LOG.debug("deleted succeeded: " + it.item())
                 itemMap.remove(it.item().id)
-                reloadData()
+                loadContent()
             },
             { LOG.error("delete failed:" + it.message, it) })
     }
 
-    private fun reloadData() {
+    private fun loadContent() {
         runOnUiThread {
             itemAdapter.values = itemMap.values.toList()
             itemAdapter.notifyDataSetChanged()
@@ -128,6 +131,7 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
+        LOG.debug("signOut")
         Amplify.Auth.signOut(
             {
                 LOG.debug("sign out succeeded")
@@ -145,6 +149,8 @@ class ListActivity : AppCompatActivity() {
 
     class SimpleItemRecyclerViewAdapter(var values: List<Todo>, private val delegate: ListActivity) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
+        private val LOG = Amplify.Logging.forNamespace("app-datastore:SimpleItemRecyclerViewAdapter")
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.list_content, parent, false)
@@ -163,7 +169,7 @@ class ListActivity : AppCompatActivity() {
             }
         }
 
-        override fun getItemCount() = values.size
+        override fun getItemCount(): Int = values.size
 
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val contentView: TextView = view.findViewById(R.id.content)

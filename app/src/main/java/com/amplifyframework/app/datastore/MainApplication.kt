@@ -21,8 +21,12 @@ import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.AmplifyConfiguration
+import com.amplifyframework.core.model.query.predicate.EqualQueryOperator
+import com.amplifyframework.core.model.query.predicate.QueryField
+import com.amplifyframework.core.model.query.predicate.QueryPredicateOperation
 import com.amplifyframework.datastore.AWSDataStorePlugin
 import com.amplifyframework.datastore.DataStoreConfiguration
+import com.amplifyframework.datastore.generated.model.Todo
 import com.amplifyframework.logging.AndroidLoggingPlugin
 import com.amplifyframework.logging.LogLevel
 

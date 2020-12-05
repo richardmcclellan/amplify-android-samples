@@ -30,19 +30,14 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
-        val resources = applicationContext.resources
         Amplify.Auth.signIn(
-            resources.getString(R.string.username),
-            resources.getString(R.string.password),
-            { runOnUiThread {
-                Toast.makeText(this, "Sign in succeeded", Toast.LENGTH_SHORT).show()
-                LOG.debug("Sign in succeeded: $it")
+            applicationContext.resources.getString(R.string.username),
+            applicationContext.resources.getString(R.string.password),
+            {
+                LOG.debug("Sign in succeeded: " + it)
                 startActivity(Intent(this, ListActivity::class.java))
-            } },
-            { runOnUiThread {
-                Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
-                LOG.error("Sign in failed: " + it.message, it)
-            } }
+            },
+            { LOG.error("Sign in failed: " + it.message, it) }
         )
     }
 
