@@ -34,10 +34,13 @@ class SignInActivity : AppCompatActivity() {
             applicationContext.resources.getString(R.string.username),
             applicationContext.resources.getString(R.string.password),
             {
-                LOG.debug("Sign in succeeded: " + it)
+                LOG.info("Sign in succeeded: " + it)
                 startActivity(Intent(this, ListActivity::class.java))
             },
-            { LOG.error("Sign in failed: " + it.message, it) }
+            { 
+                LOG.error("Sign in failed: " + it.message, it)
+                runOnUiThread { Toast.makeText(applicationContext, "Sign in failed.", Toast.LENGTH_SHORT).show() }
+            }
         )
     }
 

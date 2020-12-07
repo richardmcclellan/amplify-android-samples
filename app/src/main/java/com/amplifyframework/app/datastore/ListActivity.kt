@@ -16,6 +16,7 @@
 package com.amplifyframework.app.datastore
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
@@ -23,12 +24,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.datastore.DataStoreChannelEventName
+import com.amplifyframework.datastore.generated.model.Status
 import com.amplifyframework.datastore.generated.model.Todo
+import com.amplifyframework.datastore.syncengine.OutboxMutationEvent
+import com.amplifyframework.hub.HubChannel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ListActivity : AppCompatActivity() {
-    private val itemAdapter: SimpleItemRecyclerViewAdapter = SimpleItemRecyclerViewAdapter(listOf(), this)
+    private val itemAdapter: SimpleItemRecyclerViewAdapter = SimpleItemRecyclerViewAdapter(listOf(), setOf(),this)
     private var itemMap = linkedMapOf<String, Todo>()
+    private var idsPendingSync = mutableSetOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,18 +53,19 @@ class ListActivity : AppCompatActivity() {
 
         query()
         observe()
+        subscribe()
     }
 
-
     private fun query() {
-        LOG.debug("query")
+        LOG.info("query")
         Amplify.DataStore.query(Todo::class.java,
+//            Where.sorted(Todo.NAME.ascending()),
             { results ->
                 val todosList = results.iterator().asSequence().toList()
                 val pairsList = todosList.map { it.id to it }
                 val array = pairsList.toTypedArray()
                 itemMap = linkedMapOf(*array)
-                LOG.debug("query succeeded: " + itemMap.size + " Todos")
+                LOG.info("query succeeded: " + itemMap.size + " Todos")
                 loadContent()
             },
             { LOG.error("query failed: " + it.message, it) }
@@ -65,24 +73,37 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun observe() {
-        LOG.debug("observe")
+        LOG.info("observe")
         Amplify.DataStore.observe(Todo::class.java,
             {
-                LOG.debug("observe started.")
+                LOG.info("observe started.")
             },
             {
-                LOG.debug("observe item changed: " + it.item())
+                LOG.info("observe item changed: " + it.item())
                 query()
             },
             { LOG.error("observe failed: " + it.message, it) },
-            { LOG.debug("observe completed.") })
+            { LOG.info("observe completed.") })
+    }
+
+    private fun subscribe() {
+        Amplify.Hub.subscribe(HubChannel.DATASTORE) {
+            LOG.debug(it.name + "(" + it.id + "): " + it.data)
+            when (DataStoreChannelEventName.fromString(it.name)) {
+                DataStoreChannelEventName.OUTBOX_MUTATION_PROCESSED -> {
+                    idsPendingSync.remove((it.data as OutboxMutationEvent<Todo>).element.model.id)
+                    loadContent()
+                }
+            }
+        }
     }
 
     private fun save(item: Todo) {
-        LOG.debug("save")
+        LOG.info("save")
         Amplify.DataStore.save(item,
             {
-                LOG.debug("save succeeded: " + it.item())
+                LOG.info("save succeeded: " + it.item())
+                idsPendingSync.add(it.item().id)
                 itemMap[it.item().id] = it.item()
                 loadContent()
             },
@@ -90,10 +111,11 @@ class ListActivity : AppCompatActivity() {
     }
 
     fun delete(item: Todo) {
-        LOG.debug("delete")
+        LOG.info("delete")
         Amplify.DataStore.delete(item,
             {
-                LOG.debug("deleted succeeded: " + it.item())
+                LOG.info("deleted succeeded: " + it.item())
+                idsPendingSync.add(it.item().id)
                 itemMap.remove(it.item().id)
                 loadContent()
             },
@@ -103,6 +125,7 @@ class ListActivity : AppCompatActivity() {
     private fun loadContent() {
         runOnUiThread {
             itemAdapter.values = itemMap.values.toList()
+            itemAdapter.idsPendingSync = idsPendingSync;
             itemAdapter.notifyDataSetChanged()
             val emptyView = findViewById<TextView>(R.id.empty_view)
             emptyView.visibility = if (itemMap.size == 0) View.VISIBLE else View.GONE
@@ -131,13 +154,13 @@ class ListActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
-        LOG.debug("signOut")
+        LOG.info("signOut")
         Amplify.Auth.signOut(
             {
-                LOG.debug("sign out succeeded")
+                LOG.info("sign out succeeded")
                 Amplify.DataStore.clear(
                     {
-                        LOG.debug("clear succeeded.")
+                        LOG.info("clear succeeded.")
                         finish()
                     },
                     { LOG.error("clear failed: ", it) }
@@ -147,7 +170,9 @@ class ListActivity : AppCompatActivity() {
         )
     }
 
-    class SimpleItemRecyclerViewAdapter(var values: List<Todo>, private val delegate: ListActivity) :
+    class SimpleItemRecyclerViewAdapter(var values: List<Todo>,
+                                        var idsPendingSync: Set<String>,
+                                        private val delegate: ListActivity) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
         private val LOG = Amplify.Logging.forNamespace("app-datastore:SimpleItemRecyclerViewAdapter")
 
@@ -160,6 +185,8 @@ class ListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
             holder.contentView.text = item.name
+            val typeface = if (idsPendingSync.contains(item.id)) Typeface.ITALIC else Typeface.NORMAL
+            holder.contentView.setTypeface(null, typeface)
 
             with(holder.itemView) {
                 tag = item

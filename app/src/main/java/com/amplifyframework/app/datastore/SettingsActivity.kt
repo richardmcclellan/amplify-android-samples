@@ -16,11 +16,17 @@
 package com.amplifyframework.app.datastore
 
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.amplifyframework.auth.AuthSession
+import com.amplifyframework.auth.AuthUserAttribute
 import com.amplifyframework.core.Amplify
 
 class SettingsActivity : AppCompatActivity() {
+    var authSession: AuthSession? = null
+    var userAttributes: List<AuthUserAttribute> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -29,22 +35,28 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun fetchAuthSession() {
-        Amplify.Auth.fetchAuthSession(
-            { LOG.debug("Auth session: $it") },
+        Amplify.Auth.fetchAuthSession({
+                authSession = it
+                loadContent()
+            },
             { LOG.error("Error retrieving AuthSession: ", it) }
         )
     }
 
     private fun fetchUserAttributes() {
         Amplify.Auth.fetchUserAttributes(
-            { runOnUiThread {
-                Toast.makeText(this, "Got user attributes!", Toast.LENGTH_SHORT).show()
+            {
+                userAttributes = it
                 LOG.debug("User attributes: $it")
-            } }, { runOnUiThread {
-                Toast.makeText(this, "Failed to sign in", Toast.LENGTH_SHORT).show()
-                LOG.error("Failed to sign in: " + it.message, it)
-            } }
+                loadContent()
+            }, { LOG.error("Failed to sign in: " + it.message, it) }
         )
+    }
+    private fun loadContent() {
+        runOnUiThread {
+            val textView = findViewById<TextView>(R.id.textview);
+            textView.setText("AuthSessionDetails: \n" + authSession.toString() + " \n UserAttributes: \n " + userAttributes);
+        }
     }
 
     companion object {
