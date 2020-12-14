@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">datastore-todo</string>
+    <string name="activity_list_title">Todos</string>
+</resources>

@@ -1,2 +1,2 @@
-include ':app'
-rootProject.name = "app-datastore"
+include ':app-datastore-todo'
+rootProject.name = "app-datastore-todo"

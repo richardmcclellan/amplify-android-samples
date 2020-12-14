@@ -10,6 +10,18 @@ projects:
         codeGenTarget: ''
         generatedFileName: ''
         docsFilePath: app/src/main/graphql/com/amazonaws/amplify/generated/graphql
+  appdatastoretodo:
+    schemaPath: app-datastore-todo/src/main/graphql/schema.json
+    includes:
+      - app-datastore-todo/src/main/graphql/**/*.graphql
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: ''
+        generatedFileName: ''
+        docsFilePath: >-
+          app-datastore-todo/src/main/graphql/com/amazonaws/amplify/generated/graphql
 extensions:
   amplify:
     version: 3

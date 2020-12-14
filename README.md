@@ -4,64 +4,40 @@ The purpose of this application is to test the Amplify DataStore.
 
 <img src="./screenshot.png" width="300px"/>
 
-## Installation
+## Setup
 To use, install, and evaluate this application, please do the following:
 
-2. Import this current project into Android studio. Try to build it.
+1. Checkout this sample app project
+```
+git clone https://github.com/richardmcclellan/app-datastore-todo.git
+cd app-datastore-todo
 
-3. Using the [`schema.graphql`](./schema.graphql) as below,
-   generate models and deploy an AppSync backend. Make sure that this
-   step updates your local configuration.
+```
 
-```graphql
+2. Create an Amplify project, and add an API with Cognito auth:
+```
+amplify init
+
+# Set the resource directory to `app-datastore-todo/src/main/res` (instead of the default `app/src/main/res`)
+ 
+amplify add api
+
+# Choose Cognito User Pools" as the auth type
+# Configured advanced settings for the API and make sure conflict detection is set to AutoMerge
+# Use the following [`schema.graphql`](./schema.graphql):
+
 type Todo @model
     @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   description: String
-  status: Status!
-  dueDate: AWSDateTime
-}
-
-enum Status {
-    NOT_STARTED
-    IN_PROGRESS
-    DONE
-}
-
-type Blog @model
-    @auth(rules: [{ allow: owner, operations: [create, update, delete] }]) {
-  id: ID!
-  name: String!
-  posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
-}
-
-type Post @model
-    @key(name: "byBlog", fields: ["blogID"])
-    @auth(rules: [{ allow: owner, operations: [create, update, delete] }]) {
-  id: ID!
-  title: String!
-  blogID: ID!
-  blog: Blog @connection(fields: ["blogID"])
-  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
-  publishDate: AWSDateTime
-}
-
-type Comment @model
-    @key(name: "byPost", fields: ["postID", "content"])
-    @auth(rules: [{ allow: owner, operations: [create, update, delete] }]) {
-  id: ID!
-  postID: ID!
-  post: Post @connection(fields: ["postID"])
-  content: String!
 }
 ```
 
-Use `amplify init`, `amplify add api`. Follow the [guide to add a DataStore endpoint](https://docs.amplify.aws/lib/datastore/getting-started/q/platform/android#option-2-use-amplify-cli) --
-except choose "Cognito User Pools" as the auth type, instead of API key. Run `amplify push` when done, and wait.
+amplify push
+```
 
-4. Create a valid Cognito user, in your the user pool you just created.
-```sh
+3. Create a valid Cognito user, in your the user pool you just created.
 aws cognito-idp admin-create-user \
     --user-pool-id <pool_id_that_amplify_created> \
     --username <some_username>
@@ -73,8 +49,8 @@ aws cognito-idp admin-set-user-password \
     --permanent
 ```
 
-Add the `<some_username>` and `<some_password>` values into
-`app/src/main/res/values/sign_in.xml`. For example, your `sign_in.xml`
+4. Add the `<some_username>` and `<some_password>` values into
+`app-datastore-todo/src/main/res/values/sign_in.xml`. For example, your `sign_in.xml`
 might look as below:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -98,16 +74,16 @@ might look as below:
 
 When developing with the library, it is often very useful to be able to make changes to the sample app and the library within the same Android Studio project.  This allows you to test library changes in a sample app, even if the tests aren't passing yet, or the checkstyle isn't satisfied yet.  It also enables stepping through sample app or library code with the debugger in the same session.  This can be setup with the following steps:
 
-1. Create a symlink from amplify-android/app to app-datastore/app
+1. Create a symlink in the amplify-android project folder to the app module folder.
 
 ```
-ln -s ~/workspace/app-datastore/app ~/workspace/amplify-android/app
+ln -s ~/workspace/app-datastore-todo/app-datastore-todo ~/workspace/amplify-android/app-datastore-todo
 ```
 
 2. In amplify-android/settings.gradle, add the new module:
 
 ```
-include ':app'
+include ':app-datastore-todo'
 ```
 
 3. In amplify-android/build.gradle, add Kotlin support by replacing the `buildscript` section with:
@@ -130,11 +106,11 @@ buildscript {
 ```
 
 
-4. In app/build.gradle, modify the Amplify library references to reference the local modules.
+4. In app/build.gradle, replace the Amplify library references to reference the local modules.
 
 ```
 implementation project(':aws-api')
-implementation project(':aws-api-appsync') // Needed to use Temporal types
 implementation project(':aws-auth-cognito')
 implementation project(':aws-datastore')
 ```
+

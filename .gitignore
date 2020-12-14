@@ -7,6 +7,7 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.vscode/*
 .DS_Store
 /build
 /captures
@@ -17,9 +18,11 @@ local.properties
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
+amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
 amplify/backend/awscloudformation
+amplify/backend/.temp
 build/
 dist/
 node_modules/
@@ -29,4 +32,4 @@ amplifyconfiguration.json
 amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
-app/src/main/res/values/sign_in.xml
+app-datastore-todo/src/main/res/values/sign_in.xml
