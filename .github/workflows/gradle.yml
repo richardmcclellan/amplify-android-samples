@@ -20,10 +20,15 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build DataStore-Todo with Gradle
-      run: ./datastore-todo/gradlew build
-    - name: Build DataStore-Blog with Gradle
-      run: ./datastore-blog/gradlew build
+    - name: Build datastore-todo
+      run: |
+          cd datastore-todo
+          chmod +x gradlew
+          ./gradlew build
+    - name: Build datastore-blog
+      run: |
+          cd datastore-blog
+          chmod +x gradlew
+          ./gradlew build
+
 
