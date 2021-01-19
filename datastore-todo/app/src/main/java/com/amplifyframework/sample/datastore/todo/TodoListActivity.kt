@@ -9,6 +9,7 @@ class TodoListActivity: ListActivity<Todo>() {
     override fun createModel(): Todo {
         return Todo.builder()
             .name(applicationContext.resources.getStringArray(R.array.random_todos).random())
+            .id("asdfasdf")
             .build()
     }
 
