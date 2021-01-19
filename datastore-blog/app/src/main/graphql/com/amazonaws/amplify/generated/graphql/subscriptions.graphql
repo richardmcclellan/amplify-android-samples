@@ -1,0 +1,331 @@
+# this is an auto generated file. This will be overwritten
+subscription OnCreateBlog {
+  onCreateBlog {
+    id
+    name
+    description
+    posts {
+      items {
+        id
+        title
+        blogID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdateBlog {
+  onUpdateBlog {
+    id
+    name
+    description
+    posts {
+      items {
+        id
+        title
+        blogID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeleteBlog {
+  onDeleteBlog {
+    id
+    name
+    description
+    posts {
+      items {
+        id
+        title
+        blogID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnCreatePost {
+  onCreatePost {
+    id
+    title
+    blogID
+    blog {
+      id
+      name
+      description
+      posts {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    comments {
+      items {
+        id
+        postID
+        content
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdatePost {
+  onUpdatePost {
+    id
+    title
+    blogID
+    blog {
+      id
+      name
+      description
+      posts {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    comments {
+      items {
+        id
+        postID
+        content
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeletePost {
+  onDeletePost {
+    id
+    title
+    blogID
+    blog {
+      id
+      name
+      description
+      posts {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    comments {
+      items {
+        id
+        postID
+        content
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnCreateComment {
+  onCreateComment {
+    id
+    postID
+    post {
+      id
+      title
+      blogID
+      blog {
+        id
+        name
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      comments {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdateComment {
+  onUpdateComment {
+    id
+    postID
+    post {
+      id
+      title
+      blogID
+      blog {
+        id
+        name
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      comments {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeleteComment {
+  onDeleteComment {
+    id
+    postID
+    post {
+      id
+      title
+      blogID
+      blog {
+        id
+        name
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      comments {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}

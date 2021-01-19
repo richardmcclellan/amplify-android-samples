@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="username" type="id">alice</string>
+    <string name="password" type="id">password</string>
+</resources>

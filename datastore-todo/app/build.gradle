@@ -1,0 +1,63 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.amplifyframework.sample.datastore.todo"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+ext {
+    amplifyVersion = '1.6.9'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    implementation "com.amplifyframework:aws-api:$amplifyVersion"
+    implementation "com.amplifyframework:aws-auth-cognito:$amplifyVersion"
+    implementation "com.amplifyframework:aws-datastore:$amplifyVersion"
+
+//   Replace the Maven references above with the module references below when developing with the library in the same project.
+//    implementation project(':aws-api')
+//    implementation project(':aws-api-appsync')
+//    implementation project(':aws-auth-cognito')
+//    implementation project(':aws-datastore')
+//    implementation project(':core')
+
+    implementation project(':sample-core')
+
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

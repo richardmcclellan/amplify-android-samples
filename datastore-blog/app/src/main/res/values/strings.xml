@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">datastore-blog</string>
+    <string name="activity_list_title">Blogs</string>
+</resources>

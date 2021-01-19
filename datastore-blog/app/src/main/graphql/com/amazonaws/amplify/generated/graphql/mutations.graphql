@@ -1,0 +1,358 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateBlog(
+  $input: CreateBlogInput!
+  $condition: ModelBlogConditionInput
+) {
+  createBlog(input: $input, condition: $condition) {
+    id
+    name
+    description
+    posts {
+      items {
+        id
+        title
+        blogID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateBlog(
+  $input: UpdateBlogInput!
+  $condition: ModelBlogConditionInput
+) {
+  updateBlog(input: $input, condition: $condition) {
+    id
+    name
+    description
+    posts {
+      items {
+        id
+        title
+        blogID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteBlog(
+  $input: DeleteBlogInput!
+  $condition: ModelBlogConditionInput
+) {
+  deleteBlog(input: $input, condition: $condition) {
+    id
+    name
+    description
+    posts {
+      items {
+        id
+        title
+        blogID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation CreatePost(
+  $input: CreatePostInput!
+  $condition: ModelPostConditionInput
+) {
+  createPost(input: $input, condition: $condition) {
+    id
+    title
+    blogID
+    blog {
+      id
+      name
+      description
+      posts {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    comments {
+      items {
+        id
+        postID
+        content
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdatePost(
+  $input: UpdatePostInput!
+  $condition: ModelPostConditionInput
+) {
+  updatePost(input: $input, condition: $condition) {
+    id
+    title
+    blogID
+    blog {
+      id
+      name
+      description
+      posts {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    comments {
+      items {
+        id
+        postID
+        content
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeletePost(
+  $input: DeletePostInput!
+  $condition: ModelPostConditionInput
+) {
+  deletePost(input: $input, condition: $condition) {
+    id
+    title
+    blogID
+    blog {
+      id
+      name
+      description
+      posts {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    comments {
+      items {
+        id
+        postID
+        content
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation CreateComment(
+  $input: CreateCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  createComment(input: $input, condition: $condition) {
+    id
+    postID
+    post {
+      id
+      title
+      blogID
+      blog {
+        id
+        name
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      comments {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateComment(
+  $input: UpdateCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  updateComment(input: $input, condition: $condition) {
+    id
+    postID
+    post {
+      id
+      title
+      blogID
+      blog {
+        id
+        name
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      comments {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteComment(
+  $input: DeleteCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  deleteComment(input: $input, condition: $condition) {
+    id
+    postID
+    post {
+      id
+      title
+      blogID
+      blog {
+        id
+        name
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      comments {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}

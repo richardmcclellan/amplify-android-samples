@@ -1,0 +1,6 @@
+rootProject.name = "datastore-todo"
+
+include ':app'
+
+include ':sample-core'
+project(":sample-core").projectDir=new File(rootDir, "../sample-core/sample-core")
