@@ -4,7 +4,9 @@ This repository contains the following sample applications to demonstrate usage 
  - `datastore-blog`: uses a Blog / Post / Comment schema.
  - `datastore-todo`: uses a Todo schema, and has @auth restrictions.  
 
+It also contains `sample-core`, a library module, which is a dependency of each sample app.
 
+Below is a screenshot from the Todo sample app:
 <img src="./screenshot.png" width="300px"/>
 
 ## Setup
@@ -12,14 +14,16 @@ To use, install, and evaluate this application, please do the following:
 
 1. Create an Amplify project within each sample app's folder, and add an API with Cognito auth:
 ```
-cd datastore-todo
+cd <sample-app-folder>
 amplify init
 amplify add api
 
-# Choose Cognito User Pools" as the auth type
+# Choose "Cognito User Pools" as the auth type
 # Configured advanced settings for the API and make sure conflict detection is set to AutoMerge
-# Use the following [`schema.graphql`](./schema.graphql):
+```
 
+For `datastore-todo`, use the following `schema.graphql`:
+```
 type Todo @model
     @auth(rules: [{ allow: owner }]) {
   id: ID!
@@ -28,6 +32,36 @@ type Todo @model
 }
 ```
 
+For `datastore-blog`, use the following `schema.graphql`:
+```
+type Blog @model 
+    @auth(rules: [{ allow: owner, operations: [create, update, delete]}]) {
+  id: ID!
+  name: String!
+  description: String
+  posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
+}
+
+type Post @model @key(name: "byBlog", fields: ["blogID"]) 
+    @auth(rules: [{ allow: owner, operations: [create, update, delete]}]) { 
+  id: ID!
+  title: String!
+  blogID: ID!
+  blog: Blog @connection(fields: ["blogID"])
+  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+}
+
+type Comment @model @key(name: "byPost", fields: ["postID", "content"])
+    @auth(rules: [{ allow: owner, operations: [create, update, delete]}]) {
+  id: ID!
+  postID: ID!
+  post: Post @connection(fields: ["postID"])
+  content: String!
+}
+```
+
+Now create the backend:
+```
 amplify push
 ```
 
@@ -71,7 +105,7 @@ might look as below:
 When developing with the library, it is often very useful to be able to make changes to the sample app and the library within the same Android Studio project.  This allows you to test library changes in a sample app, even if the tests aren't passing yet, or the checkstyle isn't satisfied yet, both of which are required for publishing to Maven local.  It also enables stepping through sample app or library code with the debugger in the same session.  This can be setup with the following steps:
 
 
-1. In amplify-android/settings.gradle, add references to each sample app.  `sample-core` is also needed as a dependency of any of the sample apps.
+1. In amplify-android/settings.gradle, add references to each sample app module you want to test, as well as `sample-core` (this is a dependency of each sample app).
 
 ```
 include ':sample-datastore-blog'
@@ -79,7 +113,7 @@ project(":sample-datastore-blog").projectDir=new File(rootDir, "../amplify-andro
 include ':sample-datastore-todo'
 project(":sample-datastore-todo").projectDir=new File(rootDir, "../amplify-android-samples/datastore-todo/app")
 include ':sample-core'
-project(":sample-core").projectDir=new File(rootDir, "../amplify-android-samples/core")
+project(":sample-core").projectDir=new File(rootDir, "../amplify-android-samples/sample-core/sample-core")
 ```
 
 2. In amplify-android/build.gradle, add Kotlin support by replacing the `buildscript` section with:
@@ -101,7 +135,7 @@ buildscript {
 }
 ```
 
-3. In `sample-core/build.gradle` and `datastore-todo/build.gradle`, replace the Amplify library Maven references to reference the local modules.
+3. In `sample-core/build.gradle`,  `datastore-todo/build.gradle`, and  `datastore-blog/build.gradle`, replace the Maven references to the Amplify library with references to the local modules.
 
 ```
 implementation project(':aws-api')
