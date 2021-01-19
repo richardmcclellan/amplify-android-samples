@@ -1,8 +1,9 @@
 # Amplify Android Samples
 
 This repository contains the following sample applications to demonstrate usage of Amplify Android.  
- - `datastore-blog`: uses a Blog / Post / Comment schema.
- - `datastore-todo`: uses a Todo schema, and has @auth restrictions.  
+ - `datastore-blog`: Demonstrates DataStore with a Blog / Post / Comment schema.
+ - `datastore-todo`: Demonstrates DataStore with a Todo schema, and has @auth restrictions.  
+ - `auth-hostedui`: Demonstrates signIn/signOut with webUI
 
 It also contains `sample-core`, a library module, which is a dependency of each sample app.
 
@@ -117,6 +118,8 @@ When developing with the library, it is often very useful to be able to make cha
     project(":sample-datastore-blog").projectDir=new File(rootDir, "../amplify-android-samples/datastore-blog/app")
     include ':sample-datastore-todo'
     project(":sample-datastore-todo").projectDir=new File(rootDir, "../amplify-android-samples/datastore-todo/app")
+    include ':sample-auth-hostedui'
+    project(":sample-auth-hostedui").projectDir=new File(rootDir, "../amplify-android-samples/auth-hostedui/app")
     include ':sample-core'
     project(":sample-core").projectDir=new File(rootDir, "../amplify-android-samples/sample-core/sample-core")
     ```
