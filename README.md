@@ -120,6 +120,8 @@ When developing with the library, it is often very useful to be able to make cha
     project(":sample-datastore-todo").projectDir=new File(rootDir, "../amplify-android-samples/datastore-todo/app")
     include ':sample-auth-hostedui'
     project(":sample-auth-hostedui").projectDir=new File(rootDir, "../amplify-android-samples/auth-hostedui/app")
+    include ':sample-api-rest'
+    project(":sample-api-rest").projectDir=new File(rootDir, "../amplify-android-samples/api-rest/app")
     include ':sample-core'
     project(":sample-core").projectDir=new File(rootDir, "../amplify-android-samples/sample-core/sample-core")
     ```
