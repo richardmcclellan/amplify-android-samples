@@ -33,7 +33,7 @@ android {
 }
 
 ext {
-    amplifyVersion = '1.6.9'
+    amplifyVersion = '1.16.12'
 }
 
 dependencies {

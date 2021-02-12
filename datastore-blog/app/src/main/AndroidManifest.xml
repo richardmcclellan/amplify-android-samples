@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sample"
-        android:name=".core.MainApplication"
+        android:name=".datastore.blog.MainApplication"
         tools:replace="android:name"
         android:fullBackupContent="@xml/backup_descriptor">
         <activity
@@ -24,6 +24,15 @@
         </activity>
         <activity
             android:name=".datastore.blog.BlogListActivity"
+            android:label="@string/activity_list_title"
+            android:parentActivityName=".datastore.blog.SignInActivity"
+            android:theme="@style/Theme.Sample.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".datastore.blog.SignInActivity" />
+        </activity>
+        <activity
+            android:name=".datastore.blog.PostListActivity"
             android:label="@string/activity_list_title"
             android:parentActivityName=".datastore.blog.SignInActivity"
             android:theme="@style/Theme.Sample.NoActionBar">

@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sample"
-        android:name=".core.MainApplication"
+        android:name=".datastore.todo.MainApplication"
         tools:replace="android:name"
         android:fullBackupContent="@xml/backup_descriptor">
         <activity

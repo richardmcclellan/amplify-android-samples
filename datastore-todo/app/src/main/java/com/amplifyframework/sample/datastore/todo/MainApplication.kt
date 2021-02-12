@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-package com.amplifyframework.sample.core
+package com.amplifyframework.sample.datastore.todo
 
 import android.app.Application
 import com.amplifyframework.AmplifyException
@@ -35,12 +35,7 @@ class MainApplication : Application() {
             Amplify.addPlugin(AndroidLoggingPlugin(LogLevel.VERBOSE))
             Amplify.addPlugin(AWSApiPlugin())
             Amplify.addPlugin(AWSCognitoAuthPlugin())
-            Amplify.addPlugin(
-                AWSDataStorePlugin(DataStoreConfiguration.builder()
-                    .syncPageSize(100)
-                    .syncMaxRecords(5000)
-                    .build())
-            )
+            Amplify.addPlugin(AWSDataStorePlugin())
             Amplify.configure(
                 AmplifyConfiguration.builder(applicationContext)
                     .devMenuEnabled(false)

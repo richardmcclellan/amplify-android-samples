@@ -16,31 +16,30 @@
 package com.amplifyframework.sample.datastore.blog
 
 import com.amplifyframework.datastore.generated.model.Blog
+import com.amplifyframework.datastore.generated.model.Post
 import com.amplifyframework.sample.R
 import com.amplifyframework.sample.datastore.ListActivity
 import com.amplifyframework.sample.datastore.ViewModel
 import java.util.*
 
-class BlogListActivity : ListActivity<Blog>() {
-    override fun createModel(): Blog {
-        return Blog.builder()
-                .name(applicationContext.resources.getStringArray(R.array.random_blogs).random())
-//                .name("a name")
-                .description("a description")
-                .build()
+class PostListActivity : ListActivity<Post>() {
+    override fun createModel(): Post {
+        return Post.builder()
+            .title(applicationContext.resources.getStringArray(R.array.random_blogs).random())
+            .build()
     }
 
-    override fun updateModel(model: Blog): Blog {
+    override fun updateModel(model: Post): Post {
         return model.copyOfBuilder()
-                .name(UUID.randomUUID().toString())
+                .title(UUID.randomUUID().toString())
                 .build()
     }
 
-    override fun getModelClass(): Class<out Blog> {
-        return Blog::class.java
+    override fun getModelClass(): Class<out Post> {
+        return Post::class.java
     }
 
-    override fun getViewModel(model: Blog): ViewModel<Blog> {
-        return BlogViewModel(model)
+    override fun getViewModel(model: Post): ViewModel<Post> {
+        return PostViewModel(model)
     }
 }

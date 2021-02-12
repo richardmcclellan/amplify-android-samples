@@ -39,6 +39,7 @@ class SimpleItemRecyclerViewAdapter<T : Model>(var values: List<ViewModel<T>>,
         return ViewHolder(view)
     }
 
+    @SuppressWarnings("unchecked")  // cast from Any? to ViewModel<T>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.contentView.text = item.getTitle()
