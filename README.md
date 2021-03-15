@@ -126,26 +126,7 @@ When developing with the library, it is often very useful to be able to make cha
     project(":sample-core").projectDir=new File(rootDir, "../amplify-android-samples/sample-core/sample-core")
     ```
 
-2. In `amplify-android/build.gradle`, add Kotlin support by replacing the `buildscript` section with:
-
-    ```
-    buildscript {
-        ext {
-            kotlin_version = '1.4.20'
-        }
-        repositories {
-            google()
-            jcenter()
-        }
-
-        dependencies {
-            classpath 'com.android.tools.build:gradle:4.0.1'
-            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        }
-    }
-    ```
-
-3. In `sample-core/build.gradle`,  `datastore-todo/build.gradle`, and  `datastore-blog/build.gradle`, replace the Maven references to the Amplify library with references to the local modules.
+2. In `sample-core/build.gradle`,  `datastore-todo/build.gradle`, and  `datastore-blog/build.gradle`, replace the Maven references to the Amplify library with references to the local modules.
 
     ```
     implementation project(':aws-api')
